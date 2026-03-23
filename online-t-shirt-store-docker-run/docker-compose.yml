@@ -1,0 +1,46 @@
+services:
+  web:
+    image: 08edgarallan94/online-t-shirt-store:latest
+    ports:
+      # puedes definir los puertos maquina_anfitrion:contenedor que creas conveniente, solo hay que tener en cuenta los permisos de conexión del puerto de la maquina anfitrión o si el puerto está siendo utilizado por otra instancia.
+      - "8081:80"
+    environment:
+      - SQL_SERVER=mssql_server
+      - SQL_DATABASE=TiendaMaster
+      - SQL_USER=sa
+      - SQL_PASSWORD=PasswordSeguro123!
+    # en localhost solo se podrá ver la aplicación web en la maquina donde se ejecute el docker compose, si se quiere ver en otros dispositivos a parte de la maquina anfitrion hay que sustituir el localhost de esta variable de entorno por tu IPv4 conectado a tu red local, hacer esto es completamente opcional.
+    # esta variable de entorno es importante ya que los controladores de la aplicación web lo usan para redireccionar al usuario a las vistas o procesado de datos dependiendo de la acción que haya realizado el usuario.
+      - STORE_URL=http://localhost:8081/
+    networks:
+      - store-network
+    depends_on:
+      - db 
+    volumes:
+      - store_data:/var/www/html   
+  db:
+    build:
+      context: .
+      dockerfile: Dockerfile.sql
+    container_name: mssql_server
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=PasswordSeguro123!
+    ports:
+    # puedes definir los puertos maquina_anfitrion:contenedor que creas conveniente, solo hay que tener en cuenta los permisos de conexión del puerto de la maquina anfitrión o si el puerto está siendo utilizado por otra instancia.
+      - "1434:1433"
+    networks:
+      - store-network
+    volumes:
+    # todo cambio en la base de datos se conserva
+      - sql_data:/var/opt/mssql/data
+    # en este caso se guarda el archivo TiendaMaster.bak a la carpeta backup del contenedor de sql server para efectuar la restauración con el bash que llama el Dockerfile.sql  
+      - ./storebackup:/var/opt/mssql/backup
+
+networks:
+  store-network:
+    driver: bridge 
+
+volumes:
+  store_data:
+  sql_data:
