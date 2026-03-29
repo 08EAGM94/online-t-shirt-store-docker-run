@@ -1,5 +1,5 @@
-<p>correo administrador de la pagina: <strong>allan@gmail.com</strong></p>
-<p>contraseña: <strong>124124</strong></p>
+<p>correo administrador de la pagina: <strong>allan@gmail.com</strong><br/>
+contraseña: <strong>124124</strong></p>
 <strong>Consideraciones</strong>:<br/>
 <p>Puedes descargar Docker desktop dando click a este enlace: <a href="https://docs.docker.com/desktop/setup/install/windows-install/" target="_blank">Docker desktop</a></p>
 <p>Una vez instalado en tu equipo, descarga la carpeta de este repositorio, abre docker desktop, abre una terminal apuntando a la carpeta descargada y escribe el comando docker-compose up (puedes modificar los puertos que creas conveniente en el archivo docker-compose.yml, solo hay que verificar si otra instancia de tu equipo esté usando ese puerto o si el puerto tiene permisos de conexión) </p>
